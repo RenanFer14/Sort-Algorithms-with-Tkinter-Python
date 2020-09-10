@@ -311,26 +311,47 @@ def ext_dato():
     file_name = f.get()
     if (file_name == ""):
         messagebox.showwarning("Error al cargar archivo","Inserte un nombre de archivo valido*")
+        data_arr =  "No hay datos*"
     else:
         try:               
             data = open(file_name,'r')
-            data_arr = data.readlines()            
-            messagebox.showinfo("Archivo cargado correctamente","Cantidad de elementos cargados: "+len(data_arr))            
+            datos = data.readlines()
+            #print("extraccion correcta*")            
             data.close()
-            return data_arr
-        except:
+            messagebox.showinfo("Archivo cargado correctamente","Cantidad de elementos cargados: "+str(len(datos)))
+            data_arr = datos            
+        except FileNotFoundError:
             messagebox.showerror("Error al extraer datos","Verifique el nombre del archivo*")
             f.delete(0,len(f.get()))
+            data_arr = "No hay datos*"
+        except FileExistsError:
+            messagebox.showerror("Error al extraer datos","Verifique el nombre del archivo*")
+            f.delete(0,len(f.get()))
+            data_arr = "No hay datos*"
+        finally:
+            return data_arr
 def conv(arr):
-    arrx = arr
-    for i in range(0,len(arr)):
-        arrx[i] = int(arr[i])
-    return arrx
+    k = arr[0] 
+    try:
+        if(isinstance(int(k),int) == True):
+            for i in range(len(arr)):
+                arr[i] = int(arr[i])
+    except:
+           pass
+    
+    return arr
+    #if arr != "No hay datos*":
+    #else:        
+    #   messagebox.showwarning("Error al cargar datos","Cargue nuevamente el archivo")
+
+            
+    
         
 
 def run():
     global data_arr
-    print(data_arr) 
+    ArrDef = conv(data_arr)
+    
     
 
 f = Entry(ventana,width=25)
