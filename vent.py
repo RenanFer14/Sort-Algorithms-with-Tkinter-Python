@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
+from time import time
 import random
-
+texto = "Tiempo de ejecucion..."
 
 # programa que implementa los metodos de ordenacion
 #   Insert Sort --> insert(arr)
@@ -25,17 +26,14 @@ def insert_sort(array):
     for i in range(1, len(array)):
         # elemento para el cual se debe "buscar su posicion"
         key_item = array[i]
-
         # inicializar la variable que sera usada para unicar la posicion correcta
         j = i - 1
-
         #analizar la parte izq del arreglo y buscar la pos correcta de key_item
         # Hacerlo solo cuando key_item sea menor qie los valores adyacentes        
         while j >= 0 and array[j] > key_item:
             # intercambiar los valores del arreglo analizando de izq a der
             array[j + 1] = array[j]
             j -= 1
-
         # al terminar de cambiar posicones se ubica el elemento actual
         array[j + 1] = key_item
 
@@ -43,8 +41,7 @@ def insert_sort(array):
 
 #  2. Shell Sort
 
-def shell_sort(arr): 
-  
+def shell_sort(arr):  
     # Start with a big gap, then reduce the gap 
     n = len(arr) 
     gap = n//2
@@ -89,35 +86,40 @@ def bubble_sort(arr):
 
 #   4. Merge Sort
 
-def merge_sort(arr): 
-    if len(arr) > 1: 
-        mid = len(arr)//2 # Finding the mid of the array 
-        L = arr[:mid] # Dividing the array elements  
-        R = arr[mid:] # into 2 halves 
-  
-        merge_sort(L) # Sorting the first half 
-        merge_sort(R) # Sorting the second half 
-  
-        i = j = k = 0          
-        # Copy data to temp arrays L[] and R[] 
-        while i < len(L) and j < len(R): 
-            if L[i] < R[j]: 
-                arr[k] = L[i] 
-                i+= 1
-            else: 
-                arr[k] = R[j] 
-                j+= 1
-            k+= 1          
-        # Checking if any element was left 
-        while i < len(L): 
-            arr[k] = L[i] 
-            i+= 1
-            k+= 1
-          
-        while j < len(R): 
-            arr[k] = R[j] 
-            j+= 1
-            k+= 1
+def merge_sort(A, p, r):
+    if(p < r):
+        q = int((p + r)/2)
+        merge_sort(A, p, q)
+        merge_sort(A, q+1, r)
+        merge(A, p, q, r)
+    return A
+
+
+def merge(A, p, q, r):
+    n1 = q - p + 1
+    n2 = r - q
+    L = [0]*(n1+1)
+    R = [0]*(n2+1)
+    i = 1
+    j = 1
+    while i <= n1:
+        L[i-1] = A[p+i-1]
+        i = i + 1
+    while j <= n2:
+        R[j-1] = A[q+j]
+        j = j + 1
+    L[n1] = float("inf")
+    R[n2] = float("inf")
+    i = 0
+    j = 0
+    for k in range(p, r + 1):
+        if(L[i] < R[j]):
+            A[k] = L[i]
+            i = i + 1
+        else:
+            A[k] = R[j]
+            j = j + 1
+    return A
 
 
 #   5. Quick Sort
@@ -303,6 +305,8 @@ ventana.title("Algoritmos de Ordenacion")
 
 #variables generales
 opcion_ord = IntVar()
+textMostrar = StringVar()
+textMostrar.set("Tiempo de ejecucion...")
 #configuracion de botones
 titul_label = Label(ventana, text="ALGORITMOS DE ORDENACION",font="Helvetica 12 bold",bg="red")
 titul_label.pack()
@@ -315,20 +319,23 @@ def ext_dato():
     else:
         try:               
             data = open(file_name,'r')
-            datos = data.readlines()
+            lines = []
+            for line in data:
+                lines.append(line)
             #print("extraccion correcta*")            
             data.close()
-            messagebox.showinfo("Archivo cargado correctamente","Cantidad de elementos cargados: "+str(len(datos)))
-            data_arr = datos            
+            messagebox.showinfo("Archivo cargado correctamente","Cantidad de elementos cargados: "+str(len(lines)))
+            data_arr = lines
+            return data_arr           
         except FileNotFoundError:
             messagebox.showerror("Error al extraer datos","Verifique el nombre del archivo*")
             f.delete(0,len(f.get()))
             data_arr = "No hay datos*"
+            return data_arr
         except FileExistsError:
             messagebox.showerror("Error al extraer datos","Verifique el nombre del archivo*")
             f.delete(0,len(f.get()))
             data_arr = "No hay datos*"
-        finally:
             return data_arr
 def conv(arr):
     k = arr[0] 
@@ -337,21 +344,172 @@ def conv(arr):
             for i in range(len(arr)):
                 arr[i] = int(arr[i])
     except:
-           pass
-    
+           pass    
     return arr
     #if arr != "No hay datos*":
     #else:        
     #   messagebox.showwarning("Error al cargar datos","Cargue nuevamente el archivo")
 
-            
-    
-        
+def escribirArch(arr,namefile):
+    try:
+        filewrite = open(namefile,'w')
+        for i in arr:
+            print(i,file=filewrite)
+        filewrite.close()
+        messagebox.showinfo("Mensaje","Archivo ordenado creado satisfactoriamente")
+    except:
+        messagebox.showwarning("Error al escribir archivo","Vuelva a escribir el archivo, error desconocido*")
+
+def mostrar_tiempo(total):    
+    texto = str(round(total,6))
+    textMostrar.set(texto)
 
 def run():
     global data_arr
     ArrDef = conv(data_arr)
+    tam = len(ArrDef)
+    temporal = ArrDef
+    first = ArrDef[0]
+    opcion = opcion_ord.get()
     
+    if(isinstance(first,str) == True):
+        if(opcion == 1):
+            #medir el tiempo de ejecucion
+            start_time = time()    
+            shell_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 2): 
+            start_time = time()           
+            insert_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 3):     
+            start_time = time()       
+            bubble_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 4):     
+            start_time = time()       
+            merge_sort(temporal,0,tam-1)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 5):     
+            start_time = time()       
+            quick_sort(temporal,0,tam-1)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 8):     
+            start_time = time()       
+            heap_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 12):    
+            start_time = time()        
+            stooge_sort(temporal,0,tam-1)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        else:
+            messagebox.showwarning("Error al ordenar","PALABRAS no se pueden ordenar mediante este algoritmo...*")
+    else:
+        if(opcion == 1):      
+            start_time = time()      
+            shell_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 2):     
+            start_time = time()       
+            insert_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 3):     
+            start_time = time()       
+            bubble_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 4):     
+            start_time = time()       
+            merge_sort(temporal,0,tam-1)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 5):     
+            start_time = time()       
+            quick_sort(temporal,0,tam-1)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 6):     
+            start_time = time()       
+            tempB = bucket_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(tempB,str(opcion))
+        elif(opcion == 7):     
+            start_time = time()       
+            radix_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 8):     
+            start_time = time()       
+            heap_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 9):     
+            start_time = time()       
+            tempC = count_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(tempC,str(opcion))
+        elif(opcion == 10):    
+            start_time = time()        
+            tempBi = bin_sort(temporal)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(tempBi,str(opcion))
+        elif(opcion == 11):    
+            start_time = time()        
+            random_select(temporal,0,tam-1,0)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
+        elif(opcion == 12):    
+            start_time = time()        
+            stooge_sort(temporal,0,tam-1)
+            end_time = time()
+            total_time =  end_time-start_time
+            mostrar_tiempo(total_time)
+            escribirArch(temporal,str(opcion))
     
 
 f = Entry(ventana,width=25)
@@ -373,5 +531,9 @@ rb_rselectSort = Radiobutton(ventana, text="Random Select Sort",variable=opcion_
 rb_stoogeSort = Radiobutton(ventana, text="Stooge Sort",variable=opcion_ord, value=12).place(x=325,y=275)
 
 Button(ventana, text="Run...!!!", command=run).place(x=225,y=310)
+
+#mostrar los tiempos de ejecucion
+timelabel = Label(ventana, text="Tiempo de ejecucion:",font="Helvetica 16 bold", bg="red").place(x=50,y = 380)
+showtime = Label(ventana, text="tiempo de ejec...",font="Helvetica 16 bold",bg="skyblue", textvariable = textMostrar).place(x= 290, y=380)
 
 ventana.mainloop()
