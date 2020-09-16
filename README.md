@@ -1,7 +1,7 @@
 # Sort-Algorithms-with-Tkinter-Python
 A simple program made with Python Using Tkinter library for the interface
 
-Implememtation of sorting algorithms as following:
+Implementation of sorting algorithms as following:
   - Shell Sort
   - Insert Sort
   - Bubble Sort
