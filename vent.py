@@ -361,15 +361,25 @@ def conv(arr):
     #else:        
     #   messagebox.showwarning("Error al cargar datos","Cargue nuevamente el archivo")
 
-def escribirArch(arr,namefile):
-    try:
-        filewrite = open(namefile,'w')
-        for i in arr:
-            print(i,file=filewrite)
-        filewrite.close()
-        messagebox.showinfo("Mensaje","Archivo ordenado creado satisfactoriamente")
-    except:
-        messagebox.showwarning("Error al escribir archivo","Vuelva a escribir el archivo, error desconocido*")
+def escribirArch(arr,namefile,ind):
+    if(ind == 1):# ----> Palabras
+        try:
+            filewrite = open("out/"+namefile,'w')
+            for i in arr:
+                filewrite.write(i)
+            filewrite.close()
+            messagebox.showinfo("Mensaje","Archivo ordenado creado satisfactoriamente")
+        except:
+            messagebox.showwarning("Error al escribir archivo","Vuelva a escribir el archivo, error desconocido*")
+    else:   #-------> Numeros
+        try:
+            filewrite = open("out/"+namefile,'w')
+            for i in arr:
+                print(i,file=filewrite)
+            filewrite.close()
+            messagebox.showinfo("Mensaje","Archivo ordenado creado satisfactoriamente")
+        except:
+            messagebox.showwarning("Error al escribir archivo","Vuelva a escribir el archivo, error desconocido*")
 
 def mostrar_tiempo(total):    
     texto = str(round(total,6))
@@ -391,49 +401,49 @@ def run():
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Shell-ord",1)
         elif(opcion == 2): 
             start_time = time()           
             insert_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Insert-ord",1)
         elif(opcion == 3):     
             start_time = time()       
             bubble_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Bubble-ord",1)
         elif(opcion == 4):     
             start_time = time()       
             merge_sort(temporal,0,tam-1)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Merge-ord",1)
         elif(opcion == 5):     
             start_time = time()       
             quick_sort(temporal,0,tam-1)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Quick-ord",1)
         elif(opcion == 8):     
             start_time = time()       
             heap_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Heap-ord",1)
         elif(opcion == 12):    
             start_time = time()        
             stooge_sort(temporal,0,tam-1)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Stooge-ord",1)
         else:
             messagebox.showwarning("Error al ordenar","PALABRAS no se pueden ordenar mediante este algoritmo...*")
     else:
@@ -443,84 +453,84 @@ def run():
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Shell-ord",2)
         elif(opcion == 2):     
             start_time = time()       
             insert_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Insert-ord",2)
         elif(opcion == 3):     
             start_time = time()       
             bubble_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Bubble-ord",2)
         elif(opcion == 4):     
             start_time = time()       
             merge_sort(temporal,0,tam-1)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Merge-ord",2)
         elif(opcion == 5):     
             start_time = time()       
             quick_sort(temporal,0,tam-1)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Quick-ord",2)
         elif(opcion == 6):     
             start_time = time()       
             tempB = bucket_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(tempB,str(opcion))
+            escribirArch(tempB,"Bucket-ord",2)
         elif(opcion == 7):     
             start_time = time()       
             radix_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Radix-ord",2)
         elif(opcion == 8):     
             start_time = time()       
             heap_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Heap-ord",2)
         elif(opcion == 9):     
             start_time = time()       
             tempC = count_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(tempC,str(opcion))
+            escribirArch(tempC,"Count-ord",2)
         elif(opcion == 10):    
             start_time = time()        
             tempBi = bin_sort(temporal)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(tempBi,str(opcion))
+            escribirArch(tempBi,"Bin-ord",2)
         elif(opcion == 11):    
             start_time = time()        
             random_select(temporal,0,tam-1,0)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Random-ord",2)
         elif(opcion == 12):    
             start_time = time()        
             stooge_sort(temporal,0,tam-1)
             end_time = time()
             total_time =  end_time-start_time
             mostrar_tiempo(total_time)
-            escribirArch(temporal,str(opcion))
+            escribirArch(temporal,"Stooge-ord",2)
     
 
 f = Entry(ventana,width=25)
