@@ -18,6 +18,7 @@ texto = "Tiempo de ejecucion..."
 #   Randomized Select Sort --> rselect(arr,0,n,0)
 #   Stooge Sort --> stooge(arr,0,n)
 
+#################### REGION ALGORITMOS ##########################
 
 #  1. Insert Sort
 
@@ -36,56 +37,46 @@ def insert_sort(array):
             j -= 1
         # al terminar de cambiar posicones se ubica el elemento actual
         array[j + 1] = key_item
-
     return array
 
 #  2. Shell Sort
-
-def shell_sort(arr):  
-    # Start with a big gap, then reduce the gap 
+def shell_sort(arr): 
+    #comenzamos con un gap grande y luego lo reducimos    
     n = len(arr) 
-    gap = n//2
-  
+    gap = n//2  
     # Do a gapped insertion sort for this gap size. 
     # The first gap elements a[0..gap-1] are already in gapped  
     # order keep adding one more element until the entire array 
     # is gap sorted 
     while gap > 0:   
-        for i in range(gap,n): 
-  
-            # add a[i] to the elements that have been gap sorted 
-            # save a[i] in temp and make a hole at position i 
-            temp = arr[i] 
-  
-            # shift earlier gap-sorted elements up until the correct 
-            # location for a[i] is found 
+        for i in range(gap,n):   
+            # agregar arr[i] a los elementos que han sido ordenados
+            # guardar a[i] en temp y hacer espacio en la posicion i 
+            temp = arr[i]   
+            # cambiar los elementos ordenados antes de gap  hasta hallar la ubicacion para arr[i]
             j = i 
             while  j >= gap and arr[j-gap] >temp: 
                 arr[j] = arr[j-gap] 
-                j -= gap 
-  
-            # put temp (the original a[i]) in its correct location 
+                j -= gap   
+            # poner temp (el original arr[i]) en su posicion correcta 
             arr[j] = temp 
         gap //= 2
 
 #   3. Bubble Sort
-
 def bubble_sort(arr): 
-    n = len(arr) 
-  
-    # Traverse through all array elements 
+    # hallar la longitud de arr
+    n = len(arr)  
+    # recorrer todos los elementos de arr 
     for i in range(n):  
-        # Last i elements are already in place 
+        # los ultimos i elementos estan casi ordenados 
         for j in range(0, n-i-1):   
-            # traverse the array from 0 to n-i-1 
-            # Swap if the element found is greater 
-            # than the next element 
+            # recorrer el arr desde 0 hasta n-i-1 
+            # cambiar si el elemento encontrado es mayor que el siguiente elemento 
             if arr[j] > arr[j+1] : 
                 arr[j], arr[j+1] = arr[j+1], arr[j]
 
 
 #   4. Merge Sort
-
 def merge_sort(A, p, r):
     if(p < r):
         q = int((p + r)/2)
@@ -94,24 +85,29 @@ def merge_sort(A, p, r):
         merge(A, p, q, r)
     return A
 
-
 def merge(A, p, q, r):
     n1 = q - p + 1
     n2 = r - q
+    #arrays para las particiones derecha e izquierda
     L = [0]*(n1+1)
     R = [0]*(n2+1)
     i = 1
     j = 1
+
+    #verificar si algun elemento queda por asignar 
     while i <= n1:
         L[i-1] = A[p+i-1]
         i = i + 1
     while j <= n2:
         R[j-1] = A[q+j]
         j = j + 1
+    #asignar valores maximos
     L[n1] = float("inf")
     R[n2] = float("inf")
     i = 0
     j = 0
+
+    #copiar datos a los arrays der e izq
     for k in range(p, r + 1):
         if(L[i] < R[j]):
             A[k] = L[i]
@@ -124,112 +120,117 @@ def merge(A, p, q, r):
 
 #   5. Quick Sort
 def partition(arr,low,high): 
-    i = ( low-1 )         # index of smaller element 
-    pivot = arr[high]     # pivot 
-  
-    for j in range(low , high): 
-  
-        # If current element is smaller than the pivot 
-        if   arr[j] < pivot: 
-          
-            # increment index of smaller element 
+    # indice del elemento mas pequeño 
+    i = ( low-1 )
+    # pivote
+    pivot = arr[high]  
+    for j in range(low , high):   
+        # si el elemento actual es menor que el pivote 
+        if   arr[j] < pivot:           
+            # incrementar el indice del elemento pequeño 
             i = i+1 
             arr[i],arr[j] = arr[j],arr[i] 
-  
+    # intercambiar elementos
     arr[i+1],arr[high] = arr[high],arr[i+1] 
     return ( i+1 ) 
   
-# The main function that implements QuickSort 
-# arr[] --> Array to be sorted, 
-# low  --> Starting index, 
-# high  --> Ending index 
-  
 # Function to do Quick sort 
 def quick_sort(arr,low,high): 
-    if low < high: 
-  
-        # pi is partitioning index, arr[p] is now 
-        # at right place 
-        pi = partition(arr,low,high) 
-  
-        # Separately sort elements before 
-        # partition and after partition 
+    if low < high:   
+        # pi es indice de la particion, arr[p] esta en la posicion correcta
+        pi = partition(arr,low,high)   
+        # ordenar elementos de forma separada antes y despues del pivot
         quick_sort(arr, low, pi-1) 
         quick_sort(arr, pi+1, high) 
 
 #   6. Heap Sort
 def heapify(arr, n, i): 
-    largest = i # Initialize largest as root 
-    l = 2 * i + 1     # left = 2*i + 1 
-    r = 2 * i + 2     # right = 2*i + 2 
+    # incilizar largest como la raiz
+    largest = i  
+    # izq = 2*i + 1 
+    l = 2 * i + 1    
+     # der = 2*i + 2  
+    r = 2 * i + 2    
   
-    # See if left child of root exists and is 
-    # greater than root 
+    # ver si el hijo izq de la raiz existe y es mayor que la raiz
     if l < n and arr[i] < arr[l]: 
         largest = l 
   
-    # See if right child of root exists and is 
-    # greater than root 
+    # ver si el hijo der de la raiz existe y es mayor que la raiz 
     if r < n and arr[largest] < arr[r]: 
         largest = r 
   
-    # Change root, if needed 
+    # cambiar la raiz si se necesita
     if largest != i: 
         arr[i],arr[largest] = arr[largest],arr[i] # swap 
   
-        # Heapify the root. 
+        # poner la raiz en el heap. 
         heapify(arr, n, largest) 
-  
-# The main function to sort an array of given size 
+   
 def heap_sort(arr): 
     n = len(arr) 
   
-    # Build a maxheap. 
+    # construir un maxheap. 
     for i in range(n//2 - 1, -1, -1): 
         heapify(arr, n, i) 
   
-    # One by one extract elements 
+    # extraer los elementos uno a uno 
     for i in range(n-1, 0, -1): 
-        arr[i], arr[0] = arr[0], arr[i] # swap 
+        # swap
+        arr[i], arr[0] = arr[0], arr[i]  
         heapify(arr, i, 0) 
 
 
 #   7. Bucket Sort
 def bucket_sort(lista):
     k = len(lista) - 1
+    #crear buckets/cajas para ir almacenando
     buckets = [[] for i in range (k)]
     maxValue = max(lista)
+    # distribuir los elementos de manera uniforme
     for i in range(k, -1, -1):
         buckets[lista[i] * k // (maxValue + 1)].insert(0, lista[i])
+    #usar insert_sort para ordenar cada bucket
     for i in range(0, k):
         insert_sort(buckets[i])
     returnList = []
+    #concatenar las listas ordenadas
     for bucket in buckets:
         returnList.extend(bucket)
     return returnList
+
 #   8. Count Sort
 def count_sort(list):
-    c = [0]*(max(list)+1)  # creating a memory list of 0's, the number of 0's is equal to the max number in the given list + 1 to be inclusive
-    b = [0]*len(list)      # the final sorted list to be returned, same length as provided, unsorted list
-
+    
+    #crear una lista de 0's de tamaño igual al maximo valor de la lista dada + 1
+    c = [0]*(max(list)+1) 
+    # el arr final ordenado sera devuelto del mismo tamaño que el dado
+    b = [0]*len(list)      
+    #para cada elemento en la lista, el numero de ocurrencias se guarda en su respectivo indice en la lista C
     for i in list:
-        c[i] = c[i] + 1    # for each element in list, the number of its occurences is recorded in its respective index in list c
-
+        c[i] = c[i] + 1    
+    #cada elemento en C incluye el valor de su elemento previo
     for k in range(1, len(c)):
-        c[k] = c[k] + c[k-1]   # each element in c includes the value of its previous element
-
-    for l in list[::-1]:     #iterating over list backwards
-        b[c[l]-1] = l        # setting each value in list at the index indicated by c, subtracting by 1 to be exclusive
-        c[l] = c[l] - 1      # decrementing by 1 since that position will now be filled
+        c[k] = c[k] + c[k-1]   
+    # iterando la lista en reversa
+    for l in list[::-1]:
+         # modificamos cada valor en la lista al idnice daod por C, restadole 1    
+        b[c[l]-1] = l       
+        c[l] = c[l] - 1
     return b
+
 #   9. Radix Sort
 def radix_sort(array):
+    #determinar el maximo valor del array para saber el numero digitos
     m = max(array)    
+    #aplicar counting sort para cada digito
     i = 1
     while(m/i > 0):
         count_sort(array)        
         i*=10
+
 #   10. Bin Sort
+#### BIN SORT = BUCKET SORT
 def bin_sort(lista):
     k = len(lista) - 1
     buckets = [[] for i in range (k)]
@@ -242,12 +243,14 @@ def bin_sort(lista):
     for bucket in buckets:
         returnList.extend(bucket)
     return returnList
+
 #   11. Randomized Select Sort
+#modulo para intercambiar valores
 def swap(a,i,j):
     temp = a[i]
     a[i] = a[j]
     a[j] = temp
-  
+#modulo para realizar una particion
 def partition_r(a,l,r,p_index):
     p = a[p_index]
     swap(a,l,p_index)
@@ -274,42 +277,50 @@ def random_select(a,l,r,i):
         return random_select(a,j+1,r,i-j)
 #   12. Stooge Sort
 def stooge_sort(arr, l, h): 
+
     if l >= h: 
         return   
-    # If first element is smaller 
-    # than last, swap them 
+    # si el primer elemento es menor que el ultimo se intercambia
     if arr[l]>arr[h]: 
         t = arr[l] 
         arr[l] = arr[h] 
         arr[h] = t 
    
-    # If there are more than 2 elements in 
-    # the array 
+    # si hay mas de dos elementos en el arra 
     if h-l + 1 > 2: 
-        t = (int)((h-l + 1)/3) 
-   
-        # Recursively sort first 2 / 3 elements 
+        t = (int)((h-l + 1)/3)    
+        # ordenar recursivamente los primeros 2 / 3 elementos 
         stooge_sort(arr, l, (h-t)) 
    
-        # Recursively sort last 2 / 3 elements 
-        stooge_sort(arr, l + t, (h)) 
-   
-        # Recursively sort first 2 / 3 elements 
-        # again to confirm 
+        # ordenar recursivamente los ultimos 2 / 3 elementos 
+        stooge_sort(arr, l + t, (h))    
+        # # ordenar recursivamente los primeros 2 / 3 elementos OTRA VEZ para confirmar
         stooge_sort(arr, l, (h-t))
+        
+#################### END REGION ALGORITMOS ########################## 
+# ··························································································· 
+#################### REGION VENTANA DE INTERFAZ ##########################
 #configuracion de la ventana
 ventana = Tk()
 ventana.geometry("500x500")
 ventana.resizable(0,0)
 ventana.title("Algoritmos de Ordenacion")
+ventana.configure(background="royalblue")
+
+#imagenes a usar
+img_load = PhotoImage(file="img/ext_dat.png")
+img_btn_run = PhotoImage(file="img/start.png")
+img_exit = PhotoImage(file="img/exit.png") 
 
 #variables generales
 opcion_ord = IntVar()
 textMostrar = StringVar()
-textMostrar.set("Tiempo de ejecucion...")
-#configuracion de botones
-titul_label = Label(ventana, text="ALGORITMOS DE ORDENACION",font="Helvetica 12 bold",bg="red")
-titul_label.pack()
+textMostrar.set("0.00")
+
+#titulo de ventana
+titul_label = Label(ventana, text="ALGORITMOS DE ORDENACION",font="times 18 bold underline", bg="royalblue").place(x=70,y=30)
+
+#······ MODULOS PARA LA MANIPULACION DE LOS DATOS
 def ext_dato():
     global data_arr
     file_name = f.get()
@@ -513,27 +524,28 @@ def run():
     
 
 f = Entry(ventana,width=25)
-f.place(x=60,y=100)
-Button(ventana, text="Cargar Archivo...",width=14,command=ext_dato).place(x=250,y=100)
-Label(ventana,text="Ordenar por:",font="Helvetica 12 bold",bg="skyblue").place(x=200,y=140)
+f.place(x=60,y=100,height=25)
+Button(ventana, text="Cargar Archivo",font="times 12 bold",bg="royalblue",image=img_load,command=ext_dato,compound=TOP,border=0).place(x=250,y=85)
+Label(ventana,text="Ordenar por:",font="times 16 bold",bg="royalblue", fg="blue4").place(x=200,y=140)
 #opciones de ordenamiento
-rb_shellSort = Radiobutton(ventana, text="Shell Sort",variable=opcion_ord, value=1).place(x=90,y=175)
-rb_insertSort = Radiobutton(ventana, text="Insert Sort",variable=opcion_ord, value=2).place(x=90,y=195)
-rb_bubbleSort = Radiobutton(ventana, text="Bubble Sort",variable=opcion_ord, value=3).place(x=90,y=215)
-rb_mergeSort = Radiobutton(ventana, text="Merge Sort",variable=opcion_ord, value=4).place(x=90,y=235)
-rb_quickSort = Radiobutton(ventana, text="Quick Sort",variable=opcion_ord, value=5).place(x=90,y=255)
-rb_bucketSort = Radiobutton(ventana, text="Bucket Sort",variable=opcion_ord, value=6).place(x=90,y=275)
-rb_radixSort = Radiobutton(ventana, text="Radix Sort",variable=opcion_ord, value=7).place(x=325,y=175)
-rb_heapSort = Radiobutton(ventana, text="Heap Sort",variable=opcion_ord, value=8).place(x=325,y=195)
-rb_countSort = Radiobutton(ventana, text="Count Sort",variable=opcion_ord, value=9).place(x=325,y=215)
-rb_binSort = Radiobutton(ventana, text="Bin Sort",variable=opcion_ord, value=10).place(x=325,y=235)
-rb_rselectSort = Radiobutton(ventana, text="Random Select Sort",variable=opcion_ord, value=11).place(x=325,y=255)
-rb_stoogeSort = Radiobutton(ventana, text="Stooge Sort",variable=opcion_ord, value=12).place(x=325,y=275)
+rb_shellSort = Radiobutton(ventana, text="Shell Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=1).place(x=90,y=175)
+rb_insertSort = Radiobutton(ventana, text="Insert Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=2).place(x=90,y=195)
+rb_bubbleSort = Radiobutton(ventana, text="Bubble Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=3).place(x=90,y=215)
+rb_mergeSort = Radiobutton(ventana, text="Merge Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=4).place(x=90,y=235)
+rb_quickSort = Radiobutton(ventana, text="Quick Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=5).place(x=90,y=255)
+rb_bucketSort = Radiobutton(ventana, text="Bucket Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=6).place(x=90,y=275)
+rb_radixSort = Radiobutton(ventana, text="Radix Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=7).place(x=325,y=175)
+rb_heapSort = Radiobutton(ventana, text="Heap Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=8).place(x=325,y=195)
+rb_countSort = Radiobutton(ventana, text="Count Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=9).place(x=325,y=215)
+rb_binSort = Radiobutton(ventana, text="Bin Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=10).place(x=325,y=235)
+rb_rselectSort = Radiobutton(ventana, text="Random Select Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=11).place(x=325,y=255)
+rb_stoogeSort = Radiobutton(ventana, text="Stooge Sort",font="times 12 bold",bg="royalblue",variable=opcion_ord, value=12).place(x=325,y=275)
 
-Button(ventana, text="Run...!!!", command=run).place(x=225,y=310)
+Button(ventana, text="Run...!!!",image = img_btn_run,bg="royalblue",border=0,command=run).place(x=225,y=310)
 
 #mostrar los tiempos de ejecucion
-timelabel = Label(ventana, text="Tiempo de ejecucion:",font="Helvetica 16 bold", bg="red").place(x=50,y = 380)
-showtime = Label(ventana, text="tiempo de ejec...",font="Helvetica 16 bold",bg="skyblue", textvariable = textMostrar).place(x= 290, y=380)
-
+timelabel = Label(ventana, text="Tiempo de ejecucion:",font="times 17 bold", bg="royalblue").place(x=50,y = 380)
+showtime = Label(ventana, text="",font="Helvetica 16 bold",bg="royalblue",fg="lightblue2", textvariable = textMostrar).place(x= 275, y=381)
+second_lab = Label(ventana, text="Seg.",font="times 17 bold", fg="lightblue2", bg="royalblue").place(x=385,y=380)
+bu_salir = Button(ventana, image=img_exit,bg="royalblue", command=ventana.quit).place(x=215,y=430)
 ventana.mainloop()
